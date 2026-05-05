@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import Button from "../UI/Button";
 import Container from "../UI/Container";
 import { cn } from "../../lib/cn";
-import logoPng from "../../assets/logo.png";
+import Logo from "../../assets/Logo.webp";
 
 const navMenus = {
   Company: [
@@ -145,7 +145,7 @@ const Navbar = ({ setDemoOpen }) => {
             {/* Logo */}
             <Link to="/#home" className="inline-flex items-center gap-3">
               <img
-                src={logoPng}
+                src={Logo}
                 alt="CISLIVE"
                 className="h-12 sm:h-16 w-35"
                 loading="eager"
@@ -311,7 +311,7 @@ const Navbar = ({ setDemoOpen }) => {
                                   Have a project in mind?
                                 </p>
                                 <Link
-                                  to="/#clients"
+                                  to="/contact"
                                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-white shadow-sm transition"
                                   style={{
                                     background:

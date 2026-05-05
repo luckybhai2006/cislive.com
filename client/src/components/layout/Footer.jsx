@@ -5,7 +5,7 @@ import { FiArrowUp, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Container from "../UI/Container";
 import { cn } from "../../lib/cn";
-import logoPng from "../../assets/logo.png";
+import logoPng from "../../assets/Logo.webp";
 
 function FooterTitle({ children }) {
   return (
