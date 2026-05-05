@@ -6,7 +6,7 @@ import Card from "../components/UI/Card";
 import Button from "../components/UI/Button";
 import PageHero from "../components/pages/PageHero";
 import CompanyCTA from "../components/pages/CompanyCTA";
-import careerHero from "../assets/Career.webp";
+import careerHero from "../assets/career.webp";
 
 export default function Career() {
   const roles = useMemo(
