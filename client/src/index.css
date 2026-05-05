@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+  }
+  ::selection {
+    @apply bg-brand-200 text-ink;
+  }
+}
+
+@layer utilities {
+  @keyframes journeyIn {
+    from {
+      opacity: 0;
+      transform: translate3d(10px, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes journeyInLeft {
+    from {
+      opacity: 0;
+      transform: translate3d(-10px, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes waveLeft {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-14%, 0, 0);
+    }
+  }
+
+  @keyframes waveRight {
+    0% {
+      transform: translate3d(-14%, 0, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
