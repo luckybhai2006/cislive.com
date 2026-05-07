@@ -18,6 +18,7 @@ import Ecommerce from "./ServicePages/Ecommerce";
 import WebDevelopment from "./ServicePages/WebDevelopment";
 import WebsiteDesigning from "./ServicePages/WebsiteDesigning";
 import Contact from "./components/pages/Contact";
+import AdminDashboard from "./admin/AdminDashboard"
 function App() {
   return (
     <>
@@ -58,6 +59,7 @@ function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
+          <Route path="/admin/cislive" element={<AdminDashboard />} />
       </Routes>
     </>
   );

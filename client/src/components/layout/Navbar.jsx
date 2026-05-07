@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronDown,
   PhoneCall,
@@ -78,6 +78,9 @@ const Navbar = ({ setDemoOpen }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const mobileOpenedAtScrollYRef = useRef(0);
+  const mobileOpenedAtTimeRef = useRef(0);
+  const mobileInteractUntilRef = useRef(0);
 
   const items = useMemo(
     () => [
@@ -98,12 +101,25 @@ const Navbar = ({ setDemoOpen }) => {
 
   const handleHamburger = () => {
     setScrolled(window.scrollY > 12);
-    setMobileOpen((v) => !v);
+    setMobileOpen((v) => {
+      const next = !v;
+      if (next) {
+        mobileOpenedAtScrollYRef.current = window.scrollY;
+        mobileOpenedAtTimeRef.current = Date.now();
+      }
+      return next;
+    });
   };
 
   useEffect(() => {
     const handleScrollClose = () => {
       if (mobileOpen) {
+        if (Date.now() < mobileInteractUntilRef.current) return;
+        // Avoid instantly closing right after opening while page still has momentum scroll.
+        if (Date.now() - mobileOpenedAtTimeRef.current < 350) return;
+        const delta = Math.abs(window.scrollY - mobileOpenedAtScrollYRef.current);
+        if (delta < 24) return;
+
         setMobileOpen(false);
         setMobileAccordion(null);
       }
@@ -389,10 +405,10 @@ const Navbar = ({ setDemoOpen }) => {
           {/* ── Mobile Menu ── */}
           <div
             className={cn(
-              "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
+              "md:hidden transition-all duration-300 ease-in-out",
               mobileOpen
-                ? "max-h-[500px] opacity-100 translate-y-0"
-                : "max-h-0 opacity-0 -translate-y-5"
+                ? "max-h-[80dvh] overflow-y-auto opacity-100 translate-y-0"
+                : "max-h-0 overflow-hidden opacity-0 -translate-y-5"
             )}
           >
             <div
@@ -400,6 +416,9 @@ const Navbar = ({ setDemoOpen }) => {
                 "mt-4 flex flex-col gap-0.5 rounded-2xl p-2",
                 scrolled ? "bg-black" : "bg-white border border-line"
               )}
+              onPointerDown={() => {
+                mobileInteractUntilRef.current = Date.now() + 1200;
+              }}
             >
               {items.map((item) => {
                 const hasDropdown = Boolean(navMenus[item.label]);
@@ -430,6 +449,7 @@ const Navbar = ({ setDemoOpen }) => {
                         onClick={(e) => {
                           if (hasDropdown) {
                             e.preventDefault();
+                            mobileInteractUntilRef.current = Date.now() + 1200;
                             setMobileAccordion((prev) =>
                               prev === item.label ? null : item.label
                             );
@@ -476,7 +496,7 @@ const Navbar = ({ setDemoOpen }) => {
                         className={cn(
                           "overflow-hidden px-3 transition-all duration-300",
                           isOpen
-                            ? "max-h-64 pb-2 opacity-100"
+                            ? "max-h-96 pb-2 opacity-100"
                             : "max-h-0 pb-0 opacity-0"
                         )}
                       >

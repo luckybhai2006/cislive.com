@@ -21,27 +21,77 @@ export default function DemoModal({ isOpen, onClose }) {
 
   const [submitted, setSubmitted] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setSubmitted(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: "",
-        contact: "",
-        service: "",
-        message: "",
-        preference: "email",
-      });
-      onClose();
-    }, 1500);
+    try {
+      setLoading(true);
+
+      const payload = {
+        type: formData.preference,
+        name: formData.name,
+        service: formData.service,
+        message: formData.message,
+      };
+
+      if (formData.preference === "email") {
+        payload.email = formData.contact;
+      } else {
+        payload.phone = formData.contact;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/demo-request`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+
+        setTimeout(() => {
+          setSubmitted(false);
+
+          setFormData({
+            name: "",
+            contact: "",
+            service: "",
+            message: "",
+            preference: "email",
+          });
+
+          onClose();
+        }, 1500);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -68,7 +118,10 @@ export default function DemoModal({ isOpen, onClose }) {
           {/* HEADER */}
           <div className="px-6 py-6 text-white border-b border-white/20">
             <h2 className="text-xl font-bold">Get Free Demo</h2>
-            <p className="text-xs opacity-80">We’ll contact you quickly</p>
+
+            <p className="text-xs opacity-80">
+              We’ll contact you quickly
+            </p>
           </div>
 
           {!submitted ? (
@@ -95,6 +148,7 @@ export default function DemoModal({ isOpen, onClose }) {
                 >
                   Email
                 </button>
+
                 <button
                   type="button"
                   onClick={() =>
@@ -148,7 +202,7 @@ export default function DemoModal({ isOpen, onClose }) {
                 />
               )}
 
-              {/* 🔥 SERVICE DROPDOWN FIXED */}
+              {/* SERVICE */}
               <div className="relative w-full">
                 <select
                   name="service"
@@ -160,14 +214,18 @@ export default function DemoModal({ isOpen, onClose }) {
                   <option value="" className="text-black">
                     Select Service
                   </option>
+
                   {services.map((s, i) => (
-                    <option key={i} value={s} className="text-black">
+                    <option
+                      key={i}
+                      value={s}
+                      className="text-black"
+                    >
                       {s}
                     </option>
                   ))}
                 </select>
 
-                {/* CUSTOM ARROW */}
                 <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
                   <svg
                     className="w-4 h-4 text-white opacity-80"
@@ -194,15 +252,19 @@ export default function DemoModal({ isOpen, onClose }) {
               {/* BUTTON */}
               <button
                 type="submit"
-                className="w-full py-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-500 active:scale-95 transition"
+                disabled={loading}
+                className="w-full py-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-500 active:scale-95 transition disabled:opacity-70"
               >
-                Send Request 🚀
+                {loading ? "Sending..." : "Send Request 🚀"}
               </button>
             </form>
           ) : (
             <div className="p-8 text-center text-white">
               <h3 className="font-bold text-lg">Done ✅</h3>
-              <p className="text-sm opacity-80">We’ll contact you soon</p>
+
+              <p className="text-sm opacity-80">
+                We’ll contact you soon
+              </p>
             </div>
           )}
         </div>
