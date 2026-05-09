@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 
 import contactRoutes from "./routes/contactRoutes.js";
 import demoRoutes from "./routes/demoRoutes.js";
+import adminNotificationRoutes from "./routes/adminNotificationRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/api", contactRoutes);
 app.use("/api", demoRoutes);
+app.use("/api", adminNotificationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server Running...");

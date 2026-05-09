@@ -4,10 +4,13 @@
 
 @layer base {
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth h-full bg-surface overscroll-none;
   }
   body {
-    @apply bg-surface text-ink font-sans antialiased;
+    @apply m-0 min-h-[100dvh] h-full bg-surface text-ink font-sans antialiased overflow-x-hidden overscroll-none;
+  }
+  #root {
+    @apply min-h-[100dvh] bg-surface;
   }
   ::selection {
     @apply bg-brand-200 text-ink;
