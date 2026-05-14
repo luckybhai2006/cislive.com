@@ -283,7 +283,9 @@ export default function AdminLogin() {
                           type="button"
                           className="text-[11px] font-medium text-slate-400 hover:text-slate-200 transition"
                           onClick={() =>
-                            handleCopy(`Email: ${ADMIN_EMAIL}\nPassword: ${ADMIN_PASSWORD}`)
+                            handleCopy(
+                              `Email: ${ADMIN_EMAIL}\nPassword: ${ADMIN_PASSWORD}`
+                            )
                           }
                         >
                           Copy
@@ -324,7 +326,7 @@ export default function AdminLogin() {
         {/* Footer */}
         <div className="text-center mt-5 sm:mt-6">
           <p className="text-[11px] text-slate-500 font-light tracking-wider">
-            Secure • Encrypted • Enterprise-Grade
+            Secure • Encrypted • Reliable
           </p>
         </div>
       </div>
