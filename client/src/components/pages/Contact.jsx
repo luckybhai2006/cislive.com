@@ -127,6 +127,7 @@ export default function Contact() {
 
                 <input
                   type="text"
+                  id="name"
                   placeholder="Your full name"
                   required
                   value={formData.name}
@@ -148,6 +149,7 @@ export default function Contact() {
 
                 <input
                   type="email"
+                  id="email"
                   placeholder="your@email.com"
                   required
                   value={formData.email}
@@ -177,6 +179,7 @@ export default function Contact() {
 
                   <input
                     type="tel"
+                    id="phone"
                     placeholder="Phone number"
                     required
                     value={formData.phone}
@@ -199,6 +202,7 @@ export default function Contact() {
 
                 <input
                   type="text"
+                  id="subject"
                   placeholder="How can we help?"
                   required
                   value={formData.subject}
@@ -220,6 +224,7 @@ export default function Contact() {
 
                 <textarea
                   placeholder="Tell us more about your inquiry..."
+                  id="message"
                   rows="4"
                   required
                   value={formData.message}

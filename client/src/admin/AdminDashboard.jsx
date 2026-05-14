@@ -1362,6 +1362,7 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     setSidebarOpen(false);
+    window.localStorage.removeItem("cislive_admin_token_v1");
     window.location.replace("/");
   };
 

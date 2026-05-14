@@ -1,0 +1,22 @@
+{
+  "name": "cislive",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luckybhai2006/cislive.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luckybhai2006/cislive.com/issues"
+  },
+  "homepage": "https://github.com/luckybhai2006/cislive.com#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.7.0"
+  }
+}

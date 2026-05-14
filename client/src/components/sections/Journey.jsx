@@ -111,10 +111,10 @@ const Journey = () => {
               <ChevronLeft />
             </button>
 
-            {/* 🔥 SCROLL CONTAINER (FIXED) */}
+            {/* 🔥 SCROLL CONTAINER (FIXED) - SCROLLBAR HIDDEN */}
             <div
               ref={stripRef}
-              className="flex-1 overflow-x-auto whitespace-nowrap scroll-smooth"
+              className="flex-1 overflow-x-auto whitespace-nowrap scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             >
               <div className="relative flex min-w-max items-end pb-1">
                 <div className="absolute bottom-[18px] left-0 right-0 h-px bg-white/20" />

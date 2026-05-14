@@ -19,6 +19,9 @@ import WebDevelopment from "./ServicePages/WebDevelopment";
 import WebsiteDesigning from "./ServicePages/WebsiteDesigning";
 import Contact from "./components/pages/Contact";
 import AdminDashboard from "./admin/AdminDashboard"
+import AdminLogin from "./admin/AdminLogin";
+import ProtectedRoute from "./admin/ProtectedRoute";
+import AdminLogout from "./admin/AdminLogout";
 function App() {
   return (
     <>
@@ -59,7 +62,16 @@ function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
-          <Route path="/admin/cislive" element={<AdminDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-logout" element={<AdminLogout />} />
+        <Route
+          path="/admin/cislive"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

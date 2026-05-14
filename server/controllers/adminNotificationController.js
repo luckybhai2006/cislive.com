@@ -6,17 +6,17 @@ const normalizeStringArray = (value) =>
   Array.isArray(value) ? value.filter((v) => typeof v === "string" && v) : [];
 
 // 🆕 NEW — Helper to get or create device state
-const getDeviceState = (doc, deviceId) => {
-  if (!doc.deviceStates) doc.deviceStates = new Map();
-  if (!doc.deviceStates.has(deviceId)) {
-    doc.deviceStates.set(deviceId, {
-      seenContactIds: [],
-      seenDemoIds: [],
-      lastReadAt: new Date(),
-    });
-  }
-  return doc.deviceStates.get(deviceId);
-};
+// const getDeviceState = (doc, deviceId) => {
+//   if (!doc.deviceStates) doc.deviceStates = new Map();
+//   if (!doc.deviceStates.has(deviceId)) {
+//     doc.deviceStates.set(deviceId, {
+//       seenContactIds: [],
+//       seenDemoIds: [],
+//       lastReadAt: new Date(),
+//     });
+//   }
+//   return doc.deviceStates.get(deviceId);
+// };
 
 export const getAdminNotificationState = async (req, res) => {
   try {

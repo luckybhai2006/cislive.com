@@ -2,14 +2,7 @@ import DemoRequest from "../models/DemoRequest.js";
 
 export const createDemoRequest = async (req, res) => {
   try {
-    const {
-      type,
-      name,
-      email,
-      phone,
-      service,
-      message,
-    } = req.body;
+    const { type, name, email, phone, service, message } = req.body;
 
     if (!name || !service) {
       return res.status(400).json({
@@ -61,19 +54,15 @@ export const getAllDemos = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// controllers/demoController.js
-
-// DELETE - Delete demo request by ID
 export const deletedDemo = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedDemo = await DemoRequest.findByIdAndDelete(id);
-    
+
     if (!deletedDemo) {
       return res.status(404).json({ error: "Demo request not found" });
     }
-    
+
     res.status(200).json({ message: "Demo request deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
