@@ -256,53 +256,51 @@ export default function AdminLogin() {
                   </div>
                 </button>
 
-                {isDev && (
-                  <div className="pt-2">
-                    <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-900/10 to-transparent" />
-                    <div className="mt-3 rounded-2xl border border-slate-900/10 bg-white/70 px-4 py-3">
+                <div className="pt-2">
+                  <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-900/10 to-transparent" />
+                  <div className="mt-3 rounded-2xl border border-slate-900/10 bg-white/70 px-4 py-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[11px] font-semibold tracking-widest uppercase text-slate-700">
+                        Demo Credentials
+                      </p>
+                      <button
+                        type="button"
+                        className="text-[11px] font-medium text-slate-600 hover:text-slate-900 transition"
+                        onClick={() =>
+                          handleCopy(
+                            `Email: ${ADMIN_EMAIL}\nPassword: ${ADMIN_PASSWORD}`
+                          )
+                        }
+                      >
+                        Copy
+                      </button>
+                    </div>
+                    <div className="mt-2 grid grid-cols-1 gap-1 text-[12px] text-slate-700">
                       <div className="flex items-center justify-between gap-3">
-                        <p className="text-[11px] font-semibold tracking-widest uppercase text-slate-700">
-                          Demo Credentials
-                        </p>
+                        <span className="text-slate-500">Email</span>
                         <button
                           type="button"
-                          className="text-[11px] font-medium text-slate-600 hover:text-slate-900 transition"
-                          onClick={() =>
-                            handleCopy(
-                              `Email: ${ADMIN_EMAIL}\nPassword: ${ADMIN_PASSWORD}`
-                            )
-                          }
+                          className="font-mono text-slate-900 hover:text-slate-950 transition truncate max-w-[240px]"
+                          onClick={() => handleCopy(ADMIN_EMAIL)}
+                          title="Copy email"
                         >
-                          Copy
+                          {String(ADMIN_EMAIL ?? "")}
                         </button>
                       </div>
-                      <div className="mt-2 grid grid-cols-1 gap-1 text-[12px] text-slate-700">
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-slate-500">Email</span>
-                          <button
-                            type="button"
-                            className="font-mono text-slate-900 hover:text-slate-950 transition truncate max-w-[240px]"
-                            onClick={() => handleCopy(ADMIN_EMAIL)}
-                            title="Copy email"
-                          >
-                            {String(ADMIN_EMAIL ?? "")}
-                          </button>
-                        </div>
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-slate-500">Password</span>
-                          <button
-                            type="button"
-                            className="font-mono text-slate-900 hover:text-slate-950 transition truncate max-w-[240px]"
-                            onClick={() => handleCopy(ADMIN_PASSWORD)}
-                            title="Copy password"
-                          >
-                            {String(ADMIN_PASSWORD ?? "")}
-                          </button>
-                        </div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-slate-500">Password</span>
+                        <button
+                          type="button"
+                          className="font-mono text-slate-900 hover:text-slate-950 transition truncate max-w-[240px]"
+                          onClick={() => handleCopy(ADMIN_PASSWORD)}
+                          title="Copy password"
+                        >
+                          {String(ADMIN_PASSWORD ?? "")}
+                        </button>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </form>
             </div>
           </div>
