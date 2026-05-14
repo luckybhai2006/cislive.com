@@ -10,6 +10,8 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isDev = import.meta.env.DEV;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -63,6 +65,14 @@ export default function AdminLogin() {
       setError("Invalid email or password.");
       setIsLoading(false);
     }, 600);
+  };
+
+  const handleCopy = async (value) => {
+    try {
+      await navigator.clipboard.writeText(String(value ?? ""));
+    } catch {
+      // ignore (clipboard may be blocked)
+    }
   };
 
   const isFormValid = email.trim() && password.trim();
@@ -260,6 +270,52 @@ export default function AdminLogin() {
                     )}
                   </div>
                 </button>
+
+                {isDev && (
+                  <div className="pt-2">
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[11px] font-semibold tracking-widest uppercase text-slate-300">
+                          Demo Credentials
+                        </p>
+                        <button
+                          type="button"
+                          className="text-[11px] font-medium text-slate-400 hover:text-slate-200 transition"
+                          onClick={() =>
+                            handleCopy(`Email: ${ADMIN_EMAIL}\nPassword: ${ADMIN_PASSWORD}`)
+                          }
+                        >
+                          Copy
+                        </button>
+                      </div>
+                      <div className="mt-2 grid grid-cols-1 gap-1 text-[12px] text-slate-300">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-slate-500">Email</span>
+                          <button
+                            type="button"
+                            className="font-mono text-slate-200 hover:text-white transition truncate max-w-[240px]"
+                            onClick={() => handleCopy(ADMIN_EMAIL)}
+                            title="Copy email"
+                          >
+                            {String(ADMIN_EMAIL ?? "")}
+                          </button>
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-slate-500">Password</span>
+                          <button
+                            type="button"
+                            className="font-mono text-slate-200 hover:text-white transition truncate max-w-[240px]"
+                            onClick={() => handleCopy(ADMIN_PASSWORD)}
+                            title="Copy password"
+                          >
+                            {String(ADMIN_PASSWORD ?? "")}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </form>
             </div>
           </div>
