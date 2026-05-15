@@ -1983,6 +1983,34 @@ const saveNewNotifIds = (set) => {
   }
 };
 
+// ========== NEW: Deleted notification IDs persistence ==========
+const ADMIN_DELETED_NOTIF_IDS_KEY = "cislive_admin_deleted_notif_ids_v1";
+
+const loadDeletedNotifIds = () => {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(ADMIN_DELETED_NOTIF_IDS_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.filter(Boolean));
+  } catch {
+    return new Set();
+  }
+};
+
+const saveDeletedNotifIds = (set) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(
+      ADMIN_DELETED_NOTIF_IDS_KEY,
+      JSON.stringify(Array.from(set))
+    );
+  } catch {
+    // ignore
+  }
+};
+
 const getDeviceId = () => {
   if (typeof window === "undefined") return "server";
   let id = window.localStorage.getItem("cislive_device_id_v2");
@@ -2820,11 +2848,13 @@ export default function AdminDashboard() {
     seenContactIdsRef.current = seenIds.contacts;
     seenDemoIdsRef.current = seenIds.demos;
     newNotifIdsRef.current = loadNewNotifIds();
+    deletedNotifIdsRef.current = loadDeletedNotifIds(); // ========== NEW ==========
     console.log("✅ Initialized:", {
       deviceId: deviceIdRef.current,
       seenContacts: seenContactIdsRef.current.size,
       seenDemos: seenDemoIdsRef.current.size,
       newNotifs: newNotifIdsRef.current.size,
+      deletedNotifs: deletedNotifIdsRef.current.size, // ========== NEW ==========
     });
   }, []);
 
@@ -2930,7 +2960,13 @@ export default function AdminDashboard() {
       ? store.deletedNotifIds
       : [];
 
-    deletedNotifIdsRef.current = new Set(deletedIds.filter(Boolean));
+    // ========== FIXED: Merge deleted IDs ==========
+    const serverDeletedIds = new Set(deletedIds.filter(Boolean));
+    deletedNotifIdsRef.current = new Set([
+      ...deletedNotifIdsRef.current,
+      ...serverDeletedIds,
+    ]);
+    saveDeletedNotifIds(deletedNotifIdsRef.current);
 
     setNotifications(
       nextNotifs
@@ -3185,7 +3221,10 @@ export default function AdminDashboard() {
             }
 
             const merged = [...uniqueNewNotifs, ...prev];
-            const next = merged.slice(0, 30);
+            // ========== EXTRA SAFETY: Filter out deleted notifications ==========
+            const next = merged
+              .filter((n) => !deletedNotifIdsRef.current.has(n.id))
+              .slice(0, 30);
             persistNotifStore(next);
             return next;
           });
@@ -3237,6 +3276,7 @@ export default function AdminDashboard() {
     (notifId) => {
       if (!notifId) return;
       deletedNotifIdsRef.current.add(notifId);
+      saveDeletedNotifIds(deletedNotifIdsRef.current); // ========== NEW ==========
       newNotifIdsRef.current.delete(notifId);
       saveNewNotifIds(newNotifIdsRef.current);
       setNotifications((prev) => {
@@ -3256,6 +3296,7 @@ export default function AdminDashboard() {
       ...deletedNotifIdsRef.current,
       ...allIds,
     ]);
+    saveDeletedNotifIds(deletedNotifIdsRef.current); // ========== NEW ==========
 
     allIds.forEach((id) => newNotifIdsRef.current.delete(id));
     saveNewNotifIds(newNotifIdsRef.current);
